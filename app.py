@@ -1,5 +1,5 @@
-import os
-from dotenv import load_dotenv
+# import os
+# from dotenv import load_dotenv
 
 from langchain import PromptTemplate
 from langchain.agents import initialize_agent, Tool
@@ -17,12 +17,15 @@ import requests
 import json
 import streamlit as st
 from langchain.schema import SystemMessage
-from fastapi import FastAPI
 
-load_dotenv()
-browserless_api_key = os.getenv("BROWSERLESS_API_KEY")
-serper_api_key = os.getenv("SERP_API_KEY")
+# load_dotenv()
+# openai_api_key = os.getenv("OPENAI_API_KEY")
+# browserless_api_key = os.getenv("BROWSERLESS_API_KEY")
+# serper_api_key = os.getenv("SERP_API_KEY")
 
+openai_api_key = st.secrets["OPENAI_API_KEY"]
+browserless_api_key = st.secrets["BROWSERLESS_API_KEY"]
+serper_api_key = st.secrets["SERP_API_KEY"]
 
 # 1. Tool for search
 
@@ -86,7 +89,7 @@ def scrape_website(objective: str, url: str):
 
 
 def summary(objective, content):
-    llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613")
+    llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613", openai_api_key="openai_api_key")
 
     text_splitter = RecursiveCharacterTextSplitter(
         separators=["\n\n", "\n"], chunk_size=10000, chunk_overlap=500)
@@ -191,17 +194,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-# # 5. Set this as an API endpoint via FastAPI
-# app = FastAPI()
-#
-#
-# class Query(BaseModel):
-#     query: str
-#
-#
-# @app.post("/")
-# def researchAgent(query: Query):
-#     query = query.query
-#     content = agent({"input": query})
-#     actual_content = content['output']
-#     return actual_content
