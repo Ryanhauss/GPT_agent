@@ -89,7 +89,7 @@ def scrape_website(objective: str, url: str):
 
 
 def summary(objective, content):
-    llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613", openai_api_key=openai_api_key)
+    llm = ChatOpenAI(temperature=0, model="gpt-4-1106-preview", openai_api_key=openai_api_key)
 
     text_splitter = RecursiveCharacterTextSplitter(
         separators=["\n\n", "\n"], chunk_size=10000, chunk_overlap=500)
